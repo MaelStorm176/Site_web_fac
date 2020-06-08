@@ -87,3 +87,13 @@
             </div>
     </form>
 @endsection
+
+@section('scripts')
+    <script>
+        $('.ui.fluid.dropdown')
+            .dropdown({
+                clearable: true
+            })
+        ;
+    </script>
+@endsection

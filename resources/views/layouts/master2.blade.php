@@ -213,9 +213,7 @@
                         <label for="email">Email</label>
                         <input id="email" type="email" placeholder="Entrez votre email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <script>$(function (){erreur('{{$message}}')});</script>
                         @enderror
                     </div>
 
@@ -225,9 +223,7 @@
                         <input id="password" type="password" placeholder="Entrez votre mot de passe" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                         <div class="col-md-6">
                             @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                            <script>$(function (){erreur('{{$message}}')});</script>
                             @enderror
                         </div>
                     </div>
