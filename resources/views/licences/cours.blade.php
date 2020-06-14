@@ -71,7 +71,7 @@
                 <tr class="text-left" id={{$key->id}}>
                     <td class="text-left" id=type_{{$key->id}}>{{ $key->type }} / {{ $matiere }}</td>
                     <td class="text-left" id=titre_{{$key->id}}>{{ $key->title }}</td>
-                    <td class="text-left" id=lien_{{$key->id}}><a href="download/{{$key->filename}}">{{$key->filename}}</a></td>
+                    <td class="text-left" id=lien_{{$key->id}}><a href="{{$matiere}}/download/{{$key->filename}}">{{$key->filename}}</a></td>
                     @auth
                     @if($key->user_id == Auth::user()->id)
                             <td class="text-left" id=modifier_{{$key->id}}><button type="button" class="ui secondary button" onclick="afficherForm({{$key->id}})">Modifier</button></td>
@@ -147,18 +147,17 @@
           $('#modal_doc').modal('show');
       }
 
-	function ResetModal()
-	{
-		$('#select').val("");
-    	$('#exampleModalLongTitle').text('Ajouter un document');
-    	$('#title').prop('value','');
-        $('#formu').prop('action','{{ route("upload") }}');
-        $('#upload').html('Mettre en ligne');
-    	$('#file').show();
-    	$('#document_label').show();
-    	open_modal();
-
-   	}
+      function ResetModal()
+      {
+          $('#select').val("");
+          $('#exampleModalLongTitle').text('Ajouter un document');
+          $('#title').prop('value','');
+          $('#formu').prop('action','{{ route("upload") }}');
+          $('#upload').html('Mettre en ligne');
+          $('#file').show();
+          $('#document_label').show();
+          open_modal();
+      }
 
 	/* Affichage du modal pour modifier un fichier */
 	function afficherForm(id)

@@ -128,14 +128,32 @@
                 <a class="item right" href="{{ route('register') }}"><span>S'enregistrer</span></a>
             @endguest
             @auth
-                <a class="item right" href="{{ route('logout') }}"
-                   onclick="event.preventDefault();
-               document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
+            <div class="ui simple dropdown item">
+                <i class="user circle icon"></i>
+                <div class="menu">
+                    <a href="{{route('user-panel')}}" class="item">
+                        <i class="info circle icon"></i>Mon compte
+                    </a>
+                    @role('admin')
+                    <a href="{{route('admin-panel')}}" class="item">
+                        <i class="info circle icon"></i>Panel administrateur
+                    </a>
+                    @endrole
+
+                    <a href="#" class="item">
+                        <i class="wrench icon"></i>
+                        Parametres
+                    </a>
+                    <a class="item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                        <i class="arrow alternate circle right icon"></i>
+                        {{ __('Se deconnecter') }}
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+            </div>
             @endauth
         </div>
     </div>

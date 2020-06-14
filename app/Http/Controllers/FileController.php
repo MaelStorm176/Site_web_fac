@@ -13,14 +13,20 @@ use Illuminate\Validation\Rule;
 
 class FileController extends Controller
 {
+
+    public static function get_size()
+    {
+        $size = Storage::size('/files/');
+        return $size;
+    }
+
     public function store(Request $request)
     {
        $validation = $request->validate([
         'file'    => 'required|max:10000|mimes:pdf,htm,PDF,html',
-        'title'   => 'required|max:255',
+        'title'   => 'required|max:40',
         'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])]
       ]);
-
 
       FileController::upload($request);
       return back()->with('message','Votre fichier a été mis en ligne');
@@ -30,6 +36,11 @@ class FileController extends Controller
     {
       $uploadedFile = $request->file('file'); //on selectionne le fichier que l'user a envoyé
       $filename = $uploadedFile->getClientOriginalName(); //on chope le nom du fichier uploadé
+
+        if(Storage::disk('local')->exists('files/'.$filename))
+        {
+            $filename = time().'_'.$filename;
+        }
 
       /* On enregistre le fichier sur le serveur */
       Storage::disk('local')->putFileAs(
@@ -50,11 +61,11 @@ class FileController extends Controller
 
     /* Affichage des fichiers dans un tableau */
     public function afficher(Request $request,$licence,$info){
-        if(empty( $request->except('_token')) || ($request['select-type'] == '' && $request['search'] == ''))
+        if(empty( $request->except('_token')) || ($request['select-type'] == '' && $request['search'] == '' && $request['select-matiere'] == ''))
         {
             $files = Upload::where('matiere',$info)
                 ->orderBy('id', 'desc')
-                ->paginate(10);
+                ->paginate(20);
         }
         elseif($request['search'] != '') {
             if ($request['select-type'] == '')
@@ -63,7 +74,7 @@ class FileController extends Controller
                     ->where('title','like','%'.$request['search'].'%')
                     ->orWhere('filename','like','%'.$request['search'].'%')
                     ->orderBy('id', 'desc')
-                    ->paginate(10);
+                    ->paginate(20);
             }
             else
             {
@@ -71,14 +82,14 @@ class FileController extends Controller
                     ->where([['title','like','%'.$request['search'].'%'],['type',$request['select-type']]])
                     ->orWhere([['filename','like','%'.$request['search'].'%'],['type',$request['select-type']]])
                     ->orderBy('id', 'desc')
-                    ->paginate(10);
+                    ->paginate(20);
             }
         }
         elseif($request['select-type'] != '') {
             $files = Upload::where('matiere',$info)
                 ->where('type',$request['select-type'])
                 ->orderBy('id', 'desc')
-                ->paginate(10);
+                ->paginate(20);
         }
         else
         {
@@ -88,13 +99,13 @@ class FileController extends Controller
         $files->withPath($info.'?search='.$request["search"].'&select-type='.$request['select-type']);
         //return $files;
         return view('licences.cours')
-            ->with(compact('files'))
+            ->with(compact('files','licence'))
             ->with('matiere',$info);
     }
 
 
     /* Téléchargement d'un fichier */
-    public function download($licence,$fichier){
+    public function download($licence,$info,$fichier){
       $file_path = storage_path('app\files/'.$fichier.'/'.$fichier);
       return response()->download($file_path);
     }
@@ -103,7 +114,7 @@ class FileController extends Controller
     public function delete(Request $request){
       if($request->ajax()){
           $fichier = Upload::find($request['id']);
-          if (auth()->user()->id == $fichier->user_id) {
+          if (auth()->user()->id == $fichier->user_id || auth()->user()->hasRole(['admin'])) {
               $folder = $fichier->filename;
               Storage::deleteDirectory('/files/' . $folder);
               $fichier->delete();
