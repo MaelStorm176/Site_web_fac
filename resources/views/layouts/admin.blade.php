@@ -108,6 +108,7 @@
         <div class="ui tiny teal inverted progress">
             <div class="bar" style="width:78%"></div>
             <div class="label">Disk Usage</div>
+            coucou : {{\App\Http\Controllers\FileController::get_size()}}
         </div>
     </div>
 </div>

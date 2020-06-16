@@ -39,22 +39,22 @@
                         <i class="dropdown icon"></i>
                         INFO 100
                         <div class="menu">
-                            <a class="item" href="/licencel1/info_101">INFO 101</a>
-                            <a class="item" href="/licencel1/info_102">INFO 102</a>
-                            <a class="item" href="/licencel1/info_103">INFO 103</a>
-                            <a class="item" href="/licencel1/info_104">INFO 104</a>
-                            <a class="item" href="/licencel1/info_105">INFO 105</a>
+                            <a class="item" href="/L1/info_101">INFO 101</a>
+                            <a class="item" href="/L1/info_102">INFO 102</a>
+                            <a class="item" href="/L1/info_103">INFO 103</a>
+                            <a class="item" href="/L1/info_104">INFO 104</a>
+                            <a class="item" href="/L1/info_105">INFO 105</a>
                         </div>
                     </div>
                     <div class="item">
                         <i class="dropdown icon"></i>
                         INFO 200
                         <div class="menu">
-                            <a class="item" href="/licencel1/info_201">INFO 201</a>
-                            <a class="item" href="/licencel1/info_202">INFO 202</a>
-                            <a class="item" href="/licencel1/info_203">INFO 203</a>
-                            <a class="item" href="/licencel1/info_204">INFO 204</a>
-                            <a class="item" href="/licencel1/info_205">INFO 205</a>
+                            <a class="item" href="/L1/info_201">INFO 201</a>
+                            <a class="item" href="/L1/info_202">INFO 202</a>
+                            <a class="item" href="/L1/info_203">INFO 203</a>
+                            <a class="item" href="/L1/info_204">INFO 204</a>
+                            <a class="item" href="/L1/info_205">INFO 205</a>
                         </div>
                     </div>
                     <a class="item" href="#">Link Item</a>
@@ -70,22 +70,22 @@
                         <i class="dropdown icon"></i>
                         INFO 300
                         <div class="menu">
-                            <a class="item" href="#">INFO 301</a>
-                            <a class="item" href="#">INFO 302</a>
-                            <a class="item" href="#">INFO 303</a>
-                            <a class="item" href="#">INFO 304</a>
-                            <a class="item" href="#">INFO 305</a>
+                            <a class="item" href="/L2/info_301">INFO 301</a>
+                            <a class="item" href="/L2/info_302">INFO 302</a>
+                            <a class="item" href="/L2/info_303">INFO 303</a>
+                            <a class="item" href="/L2/info_304">INFO 304</a>
+                            <a class="item" href="/L2/info_305">INFO 305</a>
                         </div>
                     </div>
                     <div class="item">
                         <i class="dropdown icon"></i>
                         INFO 400
                         <div class="menu">
-                            <a class="item" href="#">INFO 401</a>
-                            <a class="item" href="#">INFO 402</a>
-                            <a class="item" href="#">INFO 403</a>
-                            <a class="item" href="#">INFO 404</a>
-                            <a class="item" href="#">INFO 405</a>
+                            <a class="item" href="/L2/info_401">INFO 401</a>
+                            <a class="item" href="/L2/info_402">INFO 402</a>
+                            <a class="item" href="/L2/info_403">INFO 403</a>
+                            <a class="item" href="/L2/info_404">INFO 404</a>
+                            <a class="item" href="/L2/info_405">INFO 405</a>
                         </div>
                     </div>
                     <a class="item" href="#">Link Item</a>
@@ -134,11 +134,11 @@
                     <a href="{{route('user-panel')}}" class="item">
                         <i class="info circle icon"></i>Mon compte
                     </a>
-                    @role('admin')
+                    @hasrole('admin')
                     <a href="{{route('admin-panel')}}" class="item">
                         <i class="info circle icon"></i>Panel administrateur
                     </a>
-                    @endrole
+                    @endhasrole
 
                     <a href="#" class="item">
                         <i class="wrench icon"></i>
@@ -170,19 +170,19 @@
         <div class="ui center aligned container">
             <div class="ui stackable inverted divided grid">
                 <div class="three wide column">
-                    <h4 class="ui inverted header">URCA</h4>
+                    <h4 class="ui inverted header">Licence</h4>
                     <div class="ui inverted link list">
-                        <a href="#" class="item">Link One</a>
-                        <a href="#" class="item">Link Two</a>
-                        <a href="#" class="item">Link Three</a>
+                        <a href="https://licenceinfo.fr/" class="item">Licence Informatique</a>
+                        <a href="https://www.univ-reims.fr/" class="item">Université</a>
+                        <a href="https://thor.univ-reims.fr/" class="item">THoR</a>
                         <a href="#" class="item">Link Four</a>
                     </div>
                 </div>
                 <div class="three wide column">
                     <h4 class="ui inverted header">Réseaux sociaux</h4>
                     <div class="ui inverted link list">
-                        <a href="#" class="item">Link One</a>
-                        <a href="#" class="item">Link Two</a>
+                        <a href="https://www.facebook.com/groups/213445229493092" class="item">Groupe Facebook</a>
+                        <a href="https://discord.gg/T2vM2Tu" class="item">Serveur Discord</a>
                         <a href="#" class="item">Link Three</a>
                         <a href="#" class="item">Link Four</a>
                     </div>
@@ -190,19 +190,21 @@
                 <div class="three wide column">
                     <h4 class="ui inverted header">Sites annexes</h4>
                     <div class="ui inverted link list">
+                        <!--
                         <a href="#" class="item">Link One</a>
                         <a href="#" class="item">Link Two</a>
                         <a href="#" class="item">Link Three</a>
                         <a href="#" class="item">Link Four</a>
+                        -->
                     </div>
                 </div>
                 <div class="seven wide column">
-                    <h4 class="ui inverted header">Footer Header</h4>
-                    <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                    <h4 class="ui inverted header">Le site</h4>
+                    <p>Ce site a été créé afin de simplifier un maximum le partage de fichiers entre élèves et entre licences. Vous pouvez donc partager PDF et liens HTML simplement et de manière intuitive. </p>
                 </div>
             </div>
             <div class="ui inverted section divider"></div>
-            <img src="assets/images/logo.png" class="ui centered mini image">
+            <img src="" class="ui centered mini image">
             <div class="ui horizontal inverted small divided link list">
                 <a class="item" href="#">Site Map</a>
                 <a class="item" href="#">Contact Us</a>
@@ -302,6 +304,13 @@
 @if(session()->has('erreur'))
     <script>$(function (){ erreur('{{session()->get('erreur')}}')});</script>
 @endif
+
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+        <script>$(function (){ erreur('{{$error}}')});</script>
+    @endforeach
+@endif
+
 @guest
     <script>
         function open_login() {

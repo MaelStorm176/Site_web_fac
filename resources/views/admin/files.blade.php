@@ -22,11 +22,9 @@
                                             <label>Matière</label>
                                             <select class="ui fluid selection dropdown" id='select-matiere' name='select-matiere'>
                                                 <option value=''>Tout</option>
-                                                <option value='info_101'>INFO 101</option>
-                                                <option value='info_102'>INFO 102</option>
-                                                <option value='info_103'>INFO 103</option>
-                                                <option value='info_104'>INFO 104</option>
-                                                <option value='info_105'>INFO 105</option>
+                                                @foreach($matieres as $mat)
+                                                    <option value='{{$mat->matiere}}'>{{$mat->matiere}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

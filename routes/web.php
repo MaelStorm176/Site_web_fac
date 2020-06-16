@@ -17,11 +17,13 @@ Route::get('/', 'HomeController@index')->name('/');
 
 Auth::routes();
 
-Route::post('upload', 'FileController@store')->middleware('auth')->name('upload');
+Route::post('upload', 'FileController@upload')->middleware('auth')->name('upload');
 Route::post('update', 'FileController@update')->middleware('auth')->name('update');
 Route::get('delete', 'FileController@delete')->middleware('auth')->name('delete');
 Route::get('afficherForm', 'FileController@afficherForm')->middleware('auth')->name('afficherForm');
 Route::get('afficher', 'FileController@afficher')->name('afficher');
+
+
 
 Route::get('{licence}/{info}/download/{fichier}','FileController@download');
 

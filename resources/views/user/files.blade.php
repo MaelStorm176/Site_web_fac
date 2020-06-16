@@ -10,7 +10,7 @@
                         <div class="column">
                             <div class="ui form">
                                 <form action="#" method="get">
-                                    <div class="two fields">
+                                    <div class="three fields">
                                         <div class="field">
                                             <label>Chercher un document</label>
                                             <div class="ui left icon input">
@@ -29,7 +29,6 @@
                                                 <option value='info_105'>INFO 105</option>
                                             </select>
                                         </div>
-                                    </div>
                                         <div class="field">
                                             <label>Type de document</label>
                                             <select class="ui fluid selection dropdown" id='select-type' name='select-type'>
@@ -41,24 +40,16 @@
                                                 <option value=''>Tout</option>
                                             </select>
                                         </div>
+                                    </div>
                                     <button type="submit" class="ui blue submit button">Chercher</button>
                                 </form>
                             </div>
                         </div>
                         <div class="middle aligned column">
-                            @auth
-                                <button class="ui big button" id="bouton_ajout_modif" type="button" onclick="ResetModal()">
-                                    <i class="signup icon"></i>
-                                    Ajouter un document
-                                </button>
-                            @endauth
-
-                            @guest
-                                <button class="ui big button" id="bouton_ajout_modif" type="button" onclick="open_login()">
-                                    <i class="signup icon"></i>
-                                    Connectez vous pour ajouter un document
-                                </button>
-                            @endguest
+                            <button class="ui big button" id="bouton_ajout_modif" type="button" onclick="ResetModal()">
+                                <i class="signup icon"></i>
+                                Ajouter un document
+                            </button>
                         </div>
                     </div>
                     <div class="ui vertical divider">
@@ -107,7 +98,10 @@
                                 <td>{{ $file->matiere }}</td>
                                 <td>{{ $file->created_at }}</td>
                                 <td>{{ $file->updated_at }}</td>
-                                <td class="center aligned" onclick="supprimer({{$file->id}})"><i class="trash icon"></i></td>
+                                <td class="center aligned">
+                                    <button onclick="afficherForm({{$file->id}})" class="ui button"><i class="edit icon"></i></button>
+                                    <button onclick="supprimer({{$file->id}})" class="ui button"><i class="trash icon"></i></button>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -173,6 +167,35 @@
     <script>
         function open_modal() {
             $('#modal_doc').modal('show');
+        }
+
+        /* Affichage du modal pour modifier un fichier */
+        function afficherForm(id)
+        {
+            var dummy = Date.now();
+            $.ajax({
+                url : "{{ route('afficherForm') }}",
+                type : 'get',
+                dataType : 'text', // On désire recevoir du HTML
+                data : {table:"files",dummy:dummy, id:id }, // nombat(valeur récupéré dans maj_base : valeur)
+                success : function(coderetour,statut)
+                { // code_html contient le HTML renvoyé*
+
+                    var dataretour = coderetour.split('_|');
+                    $('#exampleModalLongTitle').html('Modifier votre document : '+dataretour[0]);
+                    $('#formu').prop('action','{{ route('update') }}');
+                    $('#title').prop('value',dataretour[0]);
+                    $('#file').hide();
+                    $('#document_label').hide();
+                    //$('#file').prop('value',dataretour[1]);
+                    $('#id_fichier').val(id);
+                    $('#select').dropdown('set selected',dataretour[1]);
+                    $('#upload').text('Modifier');
+                    open_modal();
+                }
+                ,error : function(resultat, statut, erreur){
+                }
+            });
         }
 
         function ResetModal()

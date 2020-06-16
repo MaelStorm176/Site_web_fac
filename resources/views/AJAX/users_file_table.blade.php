@@ -29,9 +29,11 @@
     @endforeach
     </tbody>
 </table>
-<div id="pag_secondaire" class="ui pagination menu">
-    {{ $files->links() }}
-</div>
+@if($files->hasPages())
+    <div id="pag_secondaire" class="ui pagination menu">
+        {{ $files->links() }}
+    </div>
+@endif
 
 
 

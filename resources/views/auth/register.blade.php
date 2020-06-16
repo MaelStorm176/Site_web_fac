@@ -35,7 +35,7 @@
 
         <div class="field">
             <label><i class="icon-envelope"></i>Adresse e-mail (si possible adresse e-mail étudiante)</label>
-            <div class="two fields">
+            <div class="three fields">
                 <div class="field">
                     <input id="email" type="email" placeholder="Entrez votre E-Mail" class="input-block-level @error('email') is-invalid @enderror"  name="email" value="{{ old('email') }}" required autocomplete="email">
                     <div class="col-md-6">
@@ -52,6 +52,13 @@
                         <option value="L1">Licence 1</option>
                         <option value="L2">Licence 2</option>
                         <option value="L3">Licence 3</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <select name="statut" class="ui fluid dropdown">
+                        <option value="">Indiquez votre statut</option>
+                        <option value="1">Etudiant</option>
+                        <option value="2">Professeur</option>
                     </select>
                 </div>
             </div>

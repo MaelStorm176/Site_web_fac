@@ -15,7 +15,7 @@
                         </div>
                         <div class="field">
                             <label>Type de document</label>
-                            <select class="ui fluid selection dropdown" id='select-type' name='select-type' onchange='this.form.submit()'>
+                            <select class="ui fluid selection dropdown" id='select-type' name='select-type'>
                                 <option id='nul' name='nul' value=''>Choisissez le type de document</option>
                                 <option value='cours'>Cours</option>
                                 <option value='td'>TD</option>
@@ -124,7 +124,7 @@
                         <input id="title" type="text" placeholder="Titre" maxlength="40" name="title" required/>
                     </div>
                     <input id="id_fichier" type="hidden" name="id_fichier" value="">
-                    <input id="matiere" type="hidden" name="matiere" value=<?php echo $matiere; ?>>
+                    <input id="matiere" type="hidden" name="matiere" value=@isset($matiere) {{ $matiere }} @endisset>
             </div>
             <div class="actions">
                 <div class="ui button">Annuler</div>
@@ -172,7 +172,7 @@
 	       { // code_html contient le HTML renvoyé*
 
 	       		var dataretour = coderetour.split('_|');
-	       		$('#exampleModalLongTitle').html('Modifier votre document : '+dataretour[1]);
+	       		$('#exampleModalLongTitle').html('Modifier votre document : '+dataretour[0]);
 	       		$('#formu').prop('action','{{ route('update') }}');
 	   			$('#title').prop('value',dataretour[0]);
 	   			$('#file').hide();
@@ -199,6 +199,7 @@
 	       data : {dummy:dummy, id:id}, // nombat(valeur récupéré dans maj_base : valeur)
 	       success : function(coderetour,statut){ // code_html contient le HTML renvoyé
 	       		$('tr[id="'+id+'"]').remove();
+	       		success('Votre fichier a été supprimé');
 	        }
 	       ,error : function(resultat, statut, erreur){
 	       }

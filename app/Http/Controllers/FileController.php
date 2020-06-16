@@ -5,6 +5,7 @@ use DemeterChain\A;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use App\Upload;
@@ -20,20 +21,14 @@ class FileController extends Controller
         return $size;
     }
 
-    public function store(Request $request)
-    {
-       $validation = $request->validate([
-        'file'    => 'required|max:10000|mimes:pdf,htm,PDF,html',
-        'title'   => 'required|max:40',
-        'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])]
-      ]);
-
-      FileController::upload($request);
-      return back()->with('message','Votre fichier a été mis en ligne');
-    }
-
     public function upload(Request $request)
     {
+        $request->validate([
+            'file'    => 'required|max:10000|mimes:pdf,htm,PDF,html',
+            'title'   => 'required|max:40',
+            'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])]
+        ]);
+
       $uploadedFile = $request->file('file'); //on selectionne le fichier que l'user a envoyé
       $filename = $uploadedFile->getClientOriginalName(); //on chope le nom du fichier uploadé
 
@@ -57,10 +52,21 @@ class FileController extends Controller
       $upload->matiere = $request['matiere']; //matiere
       $upload->type = request('select'); //type (cours, tp, td...)
       $upload->save();
+
+      DB::table('download')->insertOrIgnore([
+          'file' => $filename,
+      ]);
+
+      return back()->with('message','Votre fichier a été mis en ligne');
     }
 
     /* Affichage des fichiers dans un tableau */
     public function afficher(Request $request,$licence,$info){
+        if(!in_array($info, (array)DB::table('categorie')->pluck('matiere')) && !in_array($licence, ['L1','L2','L3']))
+        {
+            abort(404);
+        }
+
         if(empty( $request->except('_token')) || ($request['select-type'] == '' && $request['search'] == '' && $request['select-matiere'] == ''))
         {
             $files = Upload::where('matiere',$info)
@@ -106,8 +112,15 @@ class FileController extends Controller
 
     /* Téléchargement d'un fichier */
     public function download($licence,$info,$fichier){
-      $file_path = storage_path('app\files/'.$fichier.'/'.$fichier);
-      return response()->download($file_path);
+        if(Storage::disk('local')->exists('files/'.$fichier))
+        {
+            DB::table('download')->where('file','=',$fichier)->increment('number',1);
+            $file_path = storage_path('app\files/'.$fichier.'/'.$fichier);
+            return response()->download($file_path);
+        }
+        else{
+            abort(404);
+        }
     }
 
     /* Suppression d'un fichier */
@@ -118,7 +131,6 @@ class FileController extends Controller
               $folder = $fichier->filename;
               Storage::deleteDirectory('/files/' . $folder);
               $fichier->delete();
-              return back()->with('message', 'Votre fichier a été supprimé');
           }
           else
           {
@@ -132,16 +144,21 @@ class FileController extends Controller
     }
 
     public function delete_all(){
-      $d = '/files';
-      Storage::deleteDirectory($d);
-      Storage::makeDirectory($d);
-      Artisan::call('migrate:refresh --path=/database/migrations/2020_01_11_193337_create_uploads_table.php');
-      echo('ok');
+        $d = '/files';
+        Storage::deleteDirectory($d);
+        Storage::makeDirectory($d);
+        Artisan::call('migrate:refresh --path=/database/migrations/2020_01_11_193337_create_uploads_table.php');
+        echo('Tous les fichiers ont bien été supprimé');
     }
 
     /* mise a jour d'un fichier en base */
     public function update(Request $request)
     {
+        $request->validate([
+            'title'   => 'required|max:40',
+            'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])]
+        ]);
+
         $fichier = Upload::find($request['id_fichier']);
         if (auth()->user()->id == $fichier->user_id)
         {
@@ -152,7 +169,7 @@ class FileController extends Controller
         }
         else
         {
-            abort(404);
+            abort(404,"Vous n'êtes pas autorisé.");
         }
     }
     /* permet d'afficher dans le formulaire le bon fichier selectionné */

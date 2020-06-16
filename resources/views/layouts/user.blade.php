@@ -32,7 +32,7 @@
     <div class="item">
         <div class="header">General</div>
         <div class="menu">
-            <a class="item">
+            <a class="item" href="{{route('user-panel')}}">
                 <div>
                     <i class="icon tachometer alternate"></i>
                     Dashboard
@@ -99,7 +99,7 @@
         <a href="#" class="sidebar-menu-toggler item" data-target="#sidebar">
             <i class="sidebar icon"></i>
         </a>
-        <a href="{{route('admin-panel')}}" class="header item">
+        <a href="{{route('user-panel')}}" class="header item">
             Panel utilisateur
         </a>
     </div>

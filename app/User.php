@@ -38,11 +38,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function files()
-    {
-        return $this->hasMany(File::class);
-    }
-
     public function uploads()
     {
         return $this->hasMany(Upload::class);

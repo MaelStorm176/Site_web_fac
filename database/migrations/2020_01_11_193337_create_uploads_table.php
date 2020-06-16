@@ -17,7 +17,7 @@ class CreateUploadsTable extends Migration
             $table->increments('id');
             $table->bigInteger('user_id')->unsigned()->index()->nullable();
             $table->string('title');
-            $table->string('filename');
+            $table->string('filename')->index();
             $table->string('type')->default('autre');
             $table->string('matiere');
             $table->softDeletes();

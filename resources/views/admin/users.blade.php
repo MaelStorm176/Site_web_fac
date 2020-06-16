@@ -4,72 +4,50 @@
     <div class="pusher">
         <div class="main-content">
 
-            <div class="ui one column very relaxed stackable grid">
+            <div class="ui one column padded grid">
                 <div class="column">
                     <div class="ui form">
                         <form action="#" method="get">
-                            <div class="two fields">
+                            <div class="four fields">
                                 <div class="field">
-                                    <label>Chercher un document</label>
+                                    <label>Nom de famille</label>
                                     <div class="ui left icon input">
-                                        <input type="text" name="search" placeholder="Titre du document">
+                                        <input type="text" name="name" placeholder="Nom">
                                         <i class="search icon"></i>
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <label>Matière</label>
-                                    <select class="ui fluid selection dropdown" id='select-matiere' name='select-matiere'>
+                                    <label>Prénom</label>
+                                    <div class="ui left icon input">
+                                        <input type="text" name="first_name" placeholder="Prénom">
+                                        <i class="search icon"></i>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Statut</label>
+                                    <select class="ui fluid selection dropdown" id='select-statut' name='select-statut'>
                                         <option value=''>Tout</option>
-                                        <option value='info_101'>INFO 101</option>
-                                        <option value='info_102'>INFO 102</option>
-                                        <option value='info_103'>INFO 103</option>
-                                        <option value='info_104'>INFO 104</option>
-                                        <option value='info_105'>INFO 105</option>
+                                        <option value='prof'>Professeur</option>
+                                        <option value='etudiant'>Etudiant</option>
+                                        <option value='admin'>Administrateur</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="field">
-                                <label>Type de document</label>
-                                <select class="ui fluid selection dropdown" id='select-type' name='select-type'>
-                                    <option id='nul' name='nul' value=''>Choisissez le type de document</option>
-                                    <option value='cours'>Cours</option>
-                                    <option value='td'>TD</option>
-                                    <option value='tp'>TP</option>
-                                    <option value='autre'>Autre</option>
-                                    <option value=''>Tout</option>
-                                </select>
+                                <div class="field">
+                                    <label>Licence</label>
+                                    <select class="ui fluid selection dropdown" id='select-licence' name='select-licence'>
+                                        <option value=''>Tout</option>
+                                        <option value='cours'>Cours</option>
+                                        <option value='td'>TD</option>
+                                        <option value='tp'>TP</option>
+                                        <option value='autre'>Autre</option>
+                                    </select>
+                                </div>
                             </div>
                             <button type="submit" class="ui blue submit button">Chercher</button>
                         </form>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

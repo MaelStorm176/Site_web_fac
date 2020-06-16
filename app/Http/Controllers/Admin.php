@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Upload;
+use Illuminate\Support\Facades\DB;
 
 class Admin extends Controller
 {
@@ -73,8 +74,8 @@ class Admin extends Controller
         }
         $count = $files->count();
         $files->withPath('files?search='.$request["search"].'&select-type='.$request['select-type']);
-
-        return view('admin.files')->with(compact('files','count'));
+        $matieres = DB::table('categorie')->select('matiere')->get();
+        return view('admin.files')->with(compact('files','count','matieres'));
     }
 
 
