@@ -24,6 +24,14 @@
 
 
     <link rel="stylesheet" href="{{asset('css/style.css')}}" />
+    <style>
+        .lien{
+            max-width: 40px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,7 +53,7 @@
             Votre compte
         </div>
         <div class="menu">
-            <a class="item">
+            <a class="item" href="{{route('user-parametres')}}">
                 <div><i class="cogs icon"></i>Paramètres</div>
             </a>
             <a class="item" href="{{route('user-files')}}">
@@ -61,10 +69,11 @@
         </div>
     </a>
 
-    <a class="item">
+
+    <a class="item" href="{{route('/')}}">
         <div>
-            <i class="icon lightbulb"></i>
-            Apps
+            <i class="icon home"></i>
+            Retour au site
         </div>
     </a>
 
@@ -111,17 +120,14 @@
         <div class="ui dropdown item">
             <i class="user cirlce icon"></i>
             <div class="menu">
-                <a href="#" class="item">
-                    <i class="info circle icon"></i>Mon compte</a
-                >
-                <a href="#" class="item">
-                    <i class="wrench icon"></i>
-                    Parametres</a
-                >
-                <a href="#" class="item">
-                    <i class="icon sign-out"></i>
-                    Logout
+                <a class="item" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                    <i class="arrow alternate circle right icon"></i>
+                    {{ __('Se deconnecter') }}
                 </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </div>
         </div>
     </div>

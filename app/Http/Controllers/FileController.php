@@ -26,38 +26,37 @@ class FileController extends Controller
         $request->validate([
             'file'    => 'required|max:10000|mimes:pdf,htm,PDF,html',
             'title'   => 'required|max:40',
-            'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])]
+            'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])],
+            'matiere'  => ['required',Rule::in(DB::table('categorie')->pluck('matiere'))]
         ]);
 
-      $uploadedFile = $request->file('file'); //on selectionne le fichier que l'user a envoyé
-      $filename = $uploadedFile->getClientOriginalName(); //on chope le nom du fichier uploadé
-
+        $uploadedFile = $request->file('file'); //on selectionne le fichier que l'user a envoyé
+        $filename = $uploadedFile->getClientOriginalName(); //on chope le nom du fichier uploadé
         if(Storage::disk('local')->exists('files/'.$filename))
         {
             $filename = time().'_'.$filename;
         }
+        /* On enregistre le fichier sur le serveur */
+        Storage::disk('local')->putFileAs(
+            'files/'.$filename,
+            $uploadedFile,
+            $filename
+        );
 
-      /* On enregistre le fichier sur le serveur */
-      Storage::disk('local')->putFileAs(
-        'files/'.$filename,
-        $uploadedFile,
-        $filename
-      );
+        /* Insertion dans la table upload du nouveau fichier */
+        $upload = new Upload;
+        $upload->title = $request['title']; //titre
+        $upload->filename = $filename; //nom du fichier
+        $upload->user()->associate(auth()->user()); //ID USER
+        $upload->matiere = $request['matiere']; //matiere
+        $upload->type = request('select'); //type (cours, tp, td...)
+        $upload->save();
 
-      /* Insertion dans la table upload du nouveau fichier */
-      $upload = new Upload;
-      $upload->title = $request['title']; //titre
-      $upload->filename = $filename; //nom du fichier
-      $upload->user()->associate(auth()->user()); //ID USER
-      $upload->matiere = $request['matiere']; //matiere
-      $upload->type = request('select'); //type (cours, tp, td...)
-      $upload->save();
-
-      DB::table('download')->insertOrIgnore([
+        DB::table('download')->insertOrIgnore([
           'file' => $filename,
-      ]);
+        ]);
 
-      return back()->with('message','Votre fichier a été mis en ligne');
+        return back()->with('message','Votre fichier a été mis en ligne');
     }
 
     /* Affichage des fichiers dans un tableau */
@@ -156,7 +155,8 @@ class FileController extends Controller
     {
         $request->validate([
             'title'   => 'required|max:40',
-            'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])]
+            'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])],
+            'matiere'  => ['required',Rule::in(DB::table('categorie')->pluck('matiere'))]
         ]);
 
         $fichier = Upload::find($request['id_fichier']);
@@ -164,6 +164,7 @@ class FileController extends Controller
         {
             $fichier->title = $request['title'];
             $fichier->type = $request['select'];
+            $fichier->matiere = $request['matiere'];
             $fichier->save();
             return back()->with('message', 'Votre fichier a été modifié');
         }
@@ -176,7 +177,7 @@ class FileController extends Controller
     public function afficherForm(Request $request){
         if ($request->ajax()){
             $z = Upload::find($request['id']);
-            echo $z->title."_|".$z->type."_|";
+            echo $z->title."_|".$z->type."_|".$z->matiere."_|";
         }
         else
         {

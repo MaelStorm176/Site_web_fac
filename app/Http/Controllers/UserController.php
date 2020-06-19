@@ -7,9 +7,12 @@ use App\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Traits\HasRoles;
 
 class UserController extends Controller
 {
+    use HasRoles;
     private $id_user;
 
     public function __construct()
@@ -25,7 +28,16 @@ class UserController extends Controller
     {
         $count = Upload::where('user_id',$this->id_user)->count();
         $files_last = Upload::where('user_id',$this->id_user)->orderBy('id', 'desc')->take(10)->get();
-        return view('user.index', compact('count', 'files_last'));
+        $download = DB::table('download')
+            ->join('uploads','uploads.filename','=','download.file')
+            ->where('user_id',$this->id_user)
+            ->sum('number');
+        $file_best = DB::table('download')
+            ->join('uploads','uploads.filename','=','download.file')
+            ->where('user_id',$this->id_user)
+            ->orderByDesc('number')
+            ->first();
+        return view('user.index', compact('count', 'files_last','download','file_best'));
     }
 
     public function files_afficher(Request $request)
@@ -85,7 +97,14 @@ class UserController extends Controller
         }
         $count = $files->count();
         $files->withPath('files?search='.$request["search"].'&select-type='.$request['select-type']);
+        $matieres = DB::table('categorie')->select('matiere')->get();
+        return view('user.files')->with(compact('files','count','matieres'));
+    }
 
-        return view('user.files')->with(compact('files','count'));
+    public function parametres()
+    {
+        $user = Auth::user();
+        $roles =  $user->roles->pluck('name');
+        return view('user.parametres',compact('user','roles'));
     }
 }

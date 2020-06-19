@@ -67,45 +67,44 @@
                                 <i class="icon users"></i>
                             </div>
                             <div class="header">
-                                @if(isset($users_count))
-                                    <div class="ui teal header">{{ $users_count }}</div>
+                                @if(isset($download))
+                                    <div class="ui teal header">{{ $download }}</div>
                                 @endif
                             </div>
                             <div class="meta">
-                                Utilisateurs inscrit
+                                Téléchargements
                             </div>
                             <div class="description">
-                                Elliot requested permission to view your contact details
+                                Les fichiers que vous avez postés ont été téléchargé {{ $download }} fois.
                             </div>
                         </div>
                         <div class="extra content">
                             <div class="ui two buttons">
-                                <a class="ui teal button" href="{{route('users')}}">Détails</a>
+                                <a class="ui teal button" href="{{route('user-files')}}">Détails</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div
-                    class="four wide computer eight wide tablet sixteen wide mobile column"
-                >
+                    class="four wide computer eight wide tablet sixteen wide mobile column">
                     <div class="ui fluid card">
                         <div class="content">
                             <div class="ui right floated header purple">
                                 <i class="icon trophy"></i>
                             </div>
                             <div class="header">
-                                <div class="ui purple header">9805</div>
+                                <div class="ui purple header">{{ $file_best->number }}</div>
                             </div>
                             <div class="meta">
-                                Views
+                                Téléchargements
                             </div>
                             <div class="description">
-                                Elliot requested permission to view your contact details
+                                Votre fichier le plus populaire {{ $file_best->title }} a été téléchargé {{ $file_best->number }} fois !
                             </div>
                         </div>
                         <div class="extra content">
                             <div class="ui two buttons">
-                                <a class="ui purple button">Détails</a>
+                                <a class="ui purple button" href="{{route('user-files')}}?search={{$file_best->title}}&select-matiere={{$file_best->matiere}}&select-type={{$file_best->type}}">Détails</a>
                             </div>
                         </div>
                     </div>
@@ -123,11 +122,11 @@
                             </th>
                         </tr>
                         <tr>
-                            <th>Lien</th>
+                            <th width="25%">Lien</th>
                             <th>Titre</th>
                             <th>Type</th>
                             <th>Matière</th>
-                            <th>Date d'upload</th>
+                            <th>Date de mise en ligne</th>
                             <th>Date de mise à jour</th>
                             <th>Action</th>
                         </tr>
@@ -135,13 +134,15 @@
                         <tbody>
                         @foreach($files_last as $file)
                             <tr id="{{$file->id}}">
-                                <td><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
+                                <td class="lien"><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
                                 <td>{{ $file->title }}</td>
                                 <td>{{ $file->type }}</td>
                                 <td>{{ $file->matiere }}</td>
                                 <td>{{ $file->created_at }}</td>
                                 <td>{{ $file->updated_at }}</td>
-                                <td class="center aligned" onclick="supprimer({{$file->id}})"><i class="trash icon"></i></td>
+                                <td class="center aligned">
+                                    <button class="ui button" onclick="supprimer({{$file->id}})"><i class="trash icon"></i></button>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -168,7 +169,7 @@
                     success('Le fichier a été supprimé');
                 }
                 ,error : function(resultat, statut, erreur){
-                    erreur("Le fichier n'a pas pu être supprimé");
+                    error("Le fichier n'a pas pu être supprimé");
                 }
             });
         }

@@ -3,10 +3,11 @@
 @section('content')
     <div class="pusher">
         <div class="main-content">
-
+            <div class="ui placeholder  segment">
             <div class="ui one column padded grid">
                 <div class="column">
                     <div class="ui form">
+                        <h2 class="ui dividing header" style="margin-bottom: 30px">Chercher un utilisateur</h2>
                         <form action="#" method="get">
                             <div class="four fields">
                                 <div class="field">
@@ -47,6 +48,7 @@
                         </form>
                     </div>
                 </div>
+            </div>
             </div>
 
 

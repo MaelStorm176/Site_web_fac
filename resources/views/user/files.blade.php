@@ -22,11 +22,9 @@
                                             <label>Matière</label>
                                             <select class="ui fluid selection dropdown" id='select-matiere' name='select-matiere'>
                                                 <option value=''>Tout</option>
-                                                <option value='info_101'>INFO 101</option>
-                                                <option value='info_102'>INFO 102</option>
-                                                <option value='info_103'>INFO 103</option>
-                                                <option value='info_104'>INFO 104</option>
-                                                <option value='info_105'>INFO 105</option>
+                                                @foreach($matieres as $mat)
+                                                    <option value='{{$mat->matiere}}'>{{$mat->matiere}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="field">
@@ -80,7 +78,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th>Lien</th>
+                            <th width="25%">Lien</th>
                             <th>Titre</th>
                             <th>Type</th>
                             <th>Matière</th>
@@ -92,7 +90,7 @@
                         <tbody>
                         @foreach($files as $file)
                             <tr id="{{$file->id}}">
-                                <td><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
+                                <td class="lien"><i class="file outline icon"></i><a href="../licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
                                 <td>{{ $file->title }}</td>
                                 <td>{{ $file->type }}</td>
                                 <td>{{ $file->matiere }}</td>
@@ -150,7 +148,12 @@
 
                 <div class="field">
                     <label for="matiere">Matiere</label>
-                    <input id="matiere" type="text" name="matiere" value="">
+                    <select class="ui fluid selection dropdown" id='matiere' name='matiere'>
+                        <option value=''>Tout</option>
+                        @foreach($matieres as $mat)
+                            <option value='{{$mat->matiere}}'>{{$mat->matiere}}</option>
+                        @endforeach
+                    </select>
                 </div>
             <div>
         <div class="actions">
@@ -190,6 +193,7 @@
                     //$('#file').prop('value',dataretour[1]);
                     $('#id_fichier').val(id);
                     $('#select').dropdown('set selected',dataretour[1]);
+                    $('#matiere').dropdown('set selected',dataretour[2]);
                     $('#upload').text('Modifier');
                     open_modal();
                 }

@@ -21,7 +21,14 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
+    <style>
+        .lien{
+            max-width: 40px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
 
@@ -57,7 +64,6 @@
                             <a class="item" href="/L1/info_205">INFO 205</a>
                         </div>
                     </div>
-                    <a class="item" href="#">Link Item</a>
                 </div>
             </div>
 
@@ -88,7 +94,6 @@
                             <a class="item" href="/L2/info_405">INFO 405</a>
                         </div>
                     </div>
-                    <a class="item" href="#">Link Item</a>
                 </div>
             </div>
 
@@ -119,7 +124,6 @@
                             <a class="item" href="#">INFO 605</a>
                         </div>
                     </div>
-                    <a class="item" href="#">Link Item</a>
                 </div>
             </div>
 
@@ -204,7 +208,7 @@
                 </div>
             </div>
             <div class="ui inverted section divider"></div>
-            <img src="" class="ui centered mini image">
+            <img class="ui centered mini image" src="{{asset('images/logo-urca.png')}}">
             <div class="ui horizontal inverted small divided link list">
                 <a class="item" href="#">Site Map</a>
                 <a class="item" href="#">Contact Us</a>

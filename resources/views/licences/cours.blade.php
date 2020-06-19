@@ -54,15 +54,12 @@
 
 
 
-    <table class='ui striped structured table celled ' id='tablefichiers' >
+    <table class='ui striped structured table celled' style="margin-bottom: 5%" id='tablefichiers' >
         <thead>
             <tr>
-              <th scope="col" class='text-left'>Type<br />
-
-              </th>
-
-              <th scope="col" width='30%'>Titre</th>
-              <th scope="col" width='20%'>Lien</th>
+              <th scope="col" width="10%" class='text-left'>Type</th>
+              <th scope="col" width='35%'>Titre</th>
+              <th scope="col" width='35%'>Lien</th>
               <th scope="col" colspan="2" width='20%'>Actions</th>
             </tr>
         </thead>
@@ -71,7 +68,7 @@
                 <tr class="text-left" id={{$key->id}}>
                     <td class="text-left" id=type_{{$key->id}}>{{ $key->type }} / {{ $matiere }}</td>
                     <td class="text-left" id=titre_{{$key->id}}>{{ $key->title }}</td>
-                    <td class="text-left" id=lien_{{$key->id}}><a href="{{$matiere}}/download/{{$key->filename}}">{{$key->filename}}</a></td>
+                    <td class="lien" id=lien_{{$key->id}}><a href="{{$matiere}}/download/{{$key->filename}}">{{$key->filename}}</a></td>
                     @auth
                     @if($key->user_id == Auth::user()->id)
                             <td class="text-left" id=modifier_{{$key->id}}><button type="button" class="ui secondary button" onclick="afficherForm({{$key->id}})">Modifier</button></td>
@@ -105,7 +102,7 @@
                     @csrf
                     <div class="field">
                         <label id="document_label" for="FILE">{{ __('Votre documents (.pdf ou .html)') }}</label>
-                        <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF, .html, .htm," />
+                        <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF, .html, .htm, .url" />
                     </div>
 
                     <div class="field">

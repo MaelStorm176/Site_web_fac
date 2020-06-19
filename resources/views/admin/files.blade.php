@@ -87,7 +87,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th>Lien</th>
+                            <th width="25%">Lien</th>
                             <th>Titre</th>
                             <th>Type</th>
                             <th>Matière</th>
@@ -100,14 +100,16 @@
                         <tbody>
                         @foreach($files as $file)
                             <tr id="{{$file->id}}">
-                                <td><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
+                                <td class="lien"><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
                                 <td>{{ $file->title }}</td>
                                 <td>{{ $file->type }}</td>
                                 <td>{{ $file->matiere }}</td>
                                 <td>{{ $file->created_at }}</td>
                                 <td>{{ $file->updated_at }}</td>
                                 <td>{{ $file->user_id }}</td>
-                                <td class="center aligned" onclick="supprimer({{$file->id}})"><i class="trash icon"></i></td>
+                                <td class="center aligned">
+                                    <button class="ui button" onclick="supprimer({{$file->id}})"><i class="trash icon"></i></button>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -156,7 +158,12 @@
 
                 <div class="field">
                     <label for="matiere">Matiere</label>
-                    <input id="matiere" type="text" name="matiere" value="">
+                    <select class="ui fluid selection dropdown" id='matiere' name='matiere'>
+                        <option value=''>Tout</option>
+                        @foreach($matieres as $mat)
+                            <option value='{{$mat->matiere}}'>{{$mat->matiere}}</option>
+                        @endforeach
+                    </select>
                 </div>
             <div>
         <div class="actions">
@@ -165,6 +172,8 @@
         </div>
     </div>
     </form>
+
+
     <!-- FIN DU MODAL -->
 @endsection
 
@@ -186,7 +195,27 @@
             $('#document_label').show();
             open_modal();
         }
-    </script>
+
+
+        /* Supprimer fichier */
+        function supprimer(id)
+        {
+            var dummy = Date.now();
+            $.ajax({
+                url : "{{ route('delete') }}",
+                type : 'get',
+                dataType : 'html', // On désire recevoir du HTML
+                data : {dummy:dummy, id:id}, // nombat(valeur récupéré dans maj_base : valeur)
+                success : function(coderetour,statut){ // code_html contient le HTML renvoyé
+                    $('tr[id="'+id+'"]').remove();
+                    success('Le fichier a été supprimé');
+                }
+                ,error : function(resultat, statut, erreur){
+                    error("Le fichier n'a pas pu être supprimé");
+                }
+            });
+        }
+</script>
 
 
 @endsection

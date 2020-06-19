@@ -17,14 +17,6 @@ Route::get('/', 'HomeController@index')->name('/');
 
 Auth::routes();
 
-Route::post('upload', 'FileController@upload')->middleware('auth')->name('upload');
-Route::post('update', 'FileController@update')->middleware('auth')->name('update');
-Route::get('delete', 'FileController@delete')->middleware('auth')->name('delete');
-Route::get('afficherForm', 'FileController@afficherForm')->middleware('auth')->name('afficherForm');
-Route::get('afficher', 'FileController@afficher')->name('afficher');
-
-
-
 Route::get('{licence}/{info}/download/{fichier}','FileController@download');
 
 Route::group(['middleware' => ['role:admin']], function () {
@@ -42,9 +34,21 @@ Route::group(['middleware' => ['role:admin']], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::post('upload', 'FileController@upload')->name('upload');
+    Route::post('update', 'FileController@update')->name('update');
+    Route::get('delete', 'FileController@delete')->name('delete');
+    Route::get('afficherForm', 'FileController@afficherForm')->name('afficherForm');
+    Route::get('afficher', 'FileController@afficher')->name('afficher');
+
     Route::get('/user-panel','UserController@index')->name('user-panel');
     Route::get('/user-panel/files','UserController@files_afficher')->name('user-files');
+    Route::get('/user-panel/parametres','UserController@parametres')->name('user-parametres');
 });
+
+Route::get('login',function (){
+   abort(404);
+})->name('login');
 
 Route::get('/{licence}/{info}','FileController@afficher');
 Route::post('/{licence}/{info}','FileController@afficher');

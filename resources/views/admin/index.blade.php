@@ -120,7 +120,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th>Lien</th>
+                        <th width="25%">Lien</th>
                         <th>Titre</th>
                         <th>Type</th>
                         <th>Matière</th>
@@ -132,13 +132,14 @@
                     <tbody>
                     @foreach($files_last as $file)
                     <tr id="{{$file->id}}">
-                        <td><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
+                        <td class="lien"><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
                         <td>{{ $file->title }}</td>
                         <td>{{ $file->type }}</td>
                         <td>{{ $file->matiere }}</td>
                         <td>{{ $file->created_at }}</td>
-                        <td>{{ $file->updated_at }}</td>
-                        <td class="center aligned" onclick="supprimer({{$file->id}})"><i class="trash icon"></i></td>
+                        <td>{{ $file->updated_at }}</td><td class="center aligned">
+                            <button class="ui button" onclick="supprimer({{$file->id}})"><i class="trash icon"></i></button>
+                        </td>
                     </tr>
                     @endforeach
                     </tbody>

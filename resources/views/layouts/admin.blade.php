@@ -24,6 +24,14 @@
 
 
     <link rel="stylesheet" href="{{asset('css/style.css')}}" />
+    <style>
+        .lien{
+            max-width: 40px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 
 <body>
@@ -64,12 +72,7 @@
         </div>
     </a>
 
-    <a class="item">
-        <div>
-            <i class="icon lightbulb"></i>
-            Apps
-        </div>
-    </a>
+
     <div class="item">
         <div class="header">Autres</div>
         <div class="menu">
@@ -89,6 +92,13 @@
         </div>
     </div>
 
+    <a class="item" href="{{route('/')}}">
+        <div>
+            <i class="icon home"></i>
+            Retour au site
+        </div>
+    </a>
+<!--
     <div class="item">
         <form action="#">
             <div class="ui mini action input">
@@ -99,6 +109,7 @@
             </div>
         </form>
     </div>
+-->
     <div class="ui segment inverted">
         <div class="ui tiny olive inverted progress">
             <div class="bar" style="width: 54%"></div>
@@ -108,7 +119,7 @@
         <div class="ui tiny teal inverted progress">
             <div class="bar" style="width:78%"></div>
             <div class="label">Disk Usage</div>
-            coucou : {{\App\Http\Controllers\FileController::get_size()}}
+            {{\App\Http\Controllers\FileController::get_size()}}
         </div>
     </div>
 </div>
@@ -133,17 +144,14 @@
         <div class="ui dropdown item">
             <i class="user cirlce icon"></i>
             <div class="menu">
-                <a href="#" class="item">
-                    <i class="info circle icon"></i>Mon compte</a
-                >
-                <a href="#" class="item">
-                    <i class="wrench icon"></i>
-                    Parametres</a
-                >
-                <a href="#" class="item">
-                    <i class="icon sign-out"></i>
-                    Logout
+                <a class="item" href="{{ route('logout') }}"
+                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                    <i class="arrow alternate circle right icon"></i>
+                    {{ __('Se deconnecter') }}
                 </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
