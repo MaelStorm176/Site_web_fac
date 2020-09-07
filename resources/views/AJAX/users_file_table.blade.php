@@ -18,7 +18,13 @@
     <tbody >
     @foreach($files as $file)
         <tr id="{{$file->id}}">
-            <td class="lien"><i class="file outline icon"></i><a href="../licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
+            <td class="lien"><i class="file outline icon"></i>
+                @if($file->document == 1)
+                    <a href="../licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a>
+                @elseif($file->document == 0)
+                    <a href="{{$file->filename}}" target="_blank">{{$file->filename}}</a>
+                @endif
+            </td>
             <td>{{ $file->title }}</td>
             <td>{{ $file->type }}</td>
             <td>{{ $file->matiere }}</td>

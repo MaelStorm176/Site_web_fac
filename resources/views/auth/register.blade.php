@@ -1,8 +1,7 @@
 @extends('layouts.master2')
-<link rel="stylesheet" href="css/login.css">
 
 @section('content')
-    <form class="ui form" method="POST" action="{{ route('register') }}">
+    <form class="ui form" method="POST" action="{{ route('register') }}" style="margin-bottom: 1%">
     @csrf
         <h4 class="ui dividing header">Formulaire d'enregistrement</h4>
         <div class="field">
@@ -11,24 +10,8 @@
                 <div class="field">
                     <input id="name" type="text"  maxlength="50" size="30" placeholder="Entrez votre nom" class="input-block-level @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                 </div>
-                <!-- ERREUR -->
-                <div class="col-md-6">
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
                 <div class="field">
                     <input id="first_name" type="text"  maxlength="50" size="30" placeholder="Entrez votre prénom" class="input-block-level @error('first_name') is-invalid @enderror" name="first_name" value="{{ old('first_name') }}" required autocomplete="name" autofocus>
-                </div>
-                <!-- ERREUR -->
-                <div class="col-md-6">
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                 </div>
             </div>
         </div>
@@ -69,22 +52,8 @@
                 <div class="field">
                     <input id="password" type="password" placeholder="Entrez votre mot de passe" class="input-block-level @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                 </div>
-                <div class="col-md-6">
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
                 <div class="field">
                     <input id="password-confirm" type="password" placeholder="Confirmer votre mot de passe" class="input-block-level" name="password_confirmation" required autocomplete="new-password">
-                </div>
-                <div class="col-md-6">
-                    @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
                 </div>
             </div>
             <br/>

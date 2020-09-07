@@ -1,6 +1,5 @@
 @extends('layouts.master2')
 @section('content')
-    <div class="container">
         <div class="ui placeholder segment">
             <div class="ui two column very relaxed stackable grid">
                 <div class="column">
@@ -48,13 +47,12 @@
                 Ou
             </div>
         </div>
-    </div>
 
 
 
 
-
-    <table class='ui striped structured table celled' style="margin-bottom: 5%" id='tablefichiers' >
+<div class="container">
+    <table class='ui striped structured table celled' style="margin-bottom: 1%" id='tablefichiers' >
         <thead>
             <tr>
               <th scope="col" width="10%" class='text-left'>Type</th>
@@ -68,30 +66,50 @@
                 <tr class="text-left" id={{$key->id}}>
                     <td class="text-left" id=type_{{$key->id}}>{{ $key->type }} / {{ $matiere }}</td>
                     <td class="text-left" id=titre_{{$key->id}}>{{ $key->title }}</td>
-                    <td class="lien" id=lien_{{$key->id}}><a href="{{$matiere}}/download/{{$key->filename}}">{{$key->filename}}</a></td>
+                    <td class="lien" id=lien_{{$key->id}}>
+                        @if($key->document == 1)
+                            <a href="{{$matiere}}/download/{{$key->filename}}" id="link_{{$key->id}}">{{$key->filename}}</a>
+                        @elseif($key->document == 0)
+                            <a href="{{$key->filename}}" id="link_{{$key->id}}" target="_blank">{{$key->filename}}</a>
+                        @endif
+                    </td>
                     @auth
                     @if($key->user_id == Auth::user()->id)
                             <td class="text-left" id=modifier_{{$key->id}}><button type="button" class="ui secondary button" onclick="afficherForm({{$key->id}})">Modifier</button></td>
                             <td class="text-left" id=supprimer_{{$key->id}}><button type="button" class="ui button" onclick="supprimer({{$key->id}})">Supprimer</button></td>
-                    @endauth
                     @else
-                        <td class="text-left" id=action_{{$key->id}}></td>
+                        <td class="text-left" id=action_{{$key->id}}>
+                            <button type="button" class="ui button" onclick="afficher_details({{$key->id}})">Détails...</button>
+                        </td>
+                        <td class="text-left" id=share_{{$key->id}}>
+                            <button type="button" class="ui button" onclick="copyToClipboard('link_{{$key->id}}')">Partager</button>
+                        </td>
                     @endif
+                    @endauth
 
+                    @guest
+                        <td class="text-left" id=action_{{$key->id}}>
+                            <button type="button" class="ui button" onclick="afficher_details({{$key->id}})">Détails...</button>
+                        </td>
+                        <td class="text-left" id=share_{{$key->id}}>
+                            <button type="button" class="ui button" onclick="copyToClipboard('link_{{$key->id}}')">Partager</button>
+                        </td>
+                    @endguest
                 </tr>
             @endforeach
         </tbody>
 	</table>
     @if($files->hasPages())
-        <div class="ui pagination menu">
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 5%">
             {{$files->links()}}
         </div>
     @endif
+</div>
+
 @endsection
 
 @section('modal')
     @auth
-
         <div class="ui tiny modal" id="modal_doc">
             <i class="close icon"></i>
             <div id="exampleModalLongTitle" class="header">
@@ -100,9 +118,30 @@
             <div class="content">
                 <form class="ui form" method="POST" id="formu" action="{{ route('upload') }}" aria-label="{{ __('Upload') }}" enctype="multipart/form-data">
                     @csrf
-                    <div class="field">
-                        <label id="document_label" for="FILE">{{ __('Votre documents (.pdf ou .html)') }}</label>
-                        <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF, .html, .htm, .url" />
+                    <div class="inline fields" id="radio-field">
+                        <label>Que souhaitez-vous mettre en ligne ?</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="frequency" checked="checked" value="fichier">
+                                <label>Document</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="frequency" value="lien">
+                                <label>Lien externe</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field z134" id="fichier">
+                        <label id="document_label" for="FILE">{{ __('Votre documents (.pdf ou .PDF)') }}</label>
+                        <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF" />
+                    </div>
+
+                    <div class="field z134" id="lien">
+                        <label id="lien_label" for="FILE">{{ __('Votre lien') }}</label>
+                        <input type="url" class="btn btn-secondary" name="lien_file" id="lien_file" placeholder="Ex: https://www.google.fr/"/>
                     </div>
 
                     <div class="field">
@@ -130,6 +169,29 @@
         </form>
     <!-- FIN DU MODAL -->
     @endauth
+
+    <div class="ui modal" id="modal_detail">
+        <i class="close icon"></i>
+        <div id="detail_title" class="header">
+            Détails du fichier
+        </div>
+        <div class="content">
+            <table class="ui striped structured table celled">
+                <thead class="center aligned">
+                    <th> Utilisateur </th>
+                    <th> Date de mise en ligne </th>
+                    <th> Date de modification </th>
+                    <th> Nombre de téléchargement </th>
+                </thead>
+
+                <tbody id="detail_body">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 @endsection
 
 @section('scripts')
@@ -140,20 +202,31 @@
           })
       ;
 
-      function open_modal() {
-          $('#modal_doc').modal('show');
+      $(document).ready(function(){
+          $('#lien').hide();
+          $('input[type="radio"]').click(function(){
+              var inputValue = $(this).attr("value");
+              var targetBox = $("#" + inputValue);
+              $(".z134").not(targetBox).hide();
+              $(targetBox).show();
+          });
+      });
+
+      function open_modal(modal) {
+          $('#'+modal).modal('show');
       }
 
       function ResetModal()
       {
           $('#select').val("");
           $('#exampleModalLongTitle').text('Ajouter un document');
+          $('#radio-field').show();
           $('#title').prop('value','');
           $('#formu').prop('action','{{ route("upload") }}');
           $('#upload').html('Mettre en ligne');
           $('#file').show();
           $('#document_label').show();
-          open_modal();
+          open_modal('modal_doc');
       }
 
 	/* Affichage du modal pour modifier un fichier */
@@ -172,13 +245,14 @@
 	       		$('#exampleModalLongTitle').html('Modifier votre document : '+dataretour[0]);
 	       		$('#formu').prop('action','{{ route('update') }}');
 	   			$('#title').prop('value',dataretour[0]);
-	   			$('#file').hide();
-	   			$('#document_label').hide();
+	   			$('#radio-field').hide();
+                $('.z134').hide();
+                $('#document_label').hide();
 	   			//$('#file').prop('value',dataretour[1]);
 	   			$('#id_fichier').val(id);
                 $('#select').dropdown('set selected',dataretour[1]);
 	   			$('#upload').text('Modifier');
-               open_modal();
+               open_modal('modal_doc');
 	        }
 	       ,error : function(resultat, statut, erreur){
 	       }
@@ -202,6 +276,37 @@
 	       }
 	    });
 	}
+
+
+      function afficher_details(id)
+      {
+          var dummy = Date.now();
+          $.ajax({
+              url : "{{ route('afficher_details') }}",
+              type : 'get',
+              dataType : 'html', // On désire recevoir du HTML
+              data : {dummy:dummy, id:id }, // nombat(valeur récupéré dans maj_base : valeur)
+              success : function(coderetour,statut)
+              { // code_html contient le HTML renvoyé*
+                  $('#detail_body').html(coderetour);
+                  open_modal('modal_detail');
+              }
+              ,error : function(resultat, statut, erreur){
+              }
+          });
+      }
+
+      function copyToClipboard(text) {
+          lien = $('#'+text).attr('href');
+          var input = document.body.appendChild(document.createElement("input"));
+          input.value = lien;
+          input.focus();
+          input.select();
+          document.execCommand('copy');
+          input.parentNode.removeChild(input);
+          success('Lien copié !')
+      }
+
   </script>
 @endsection
 

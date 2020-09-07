@@ -12,17 +12,17 @@
                             <i class="icon file"></i>
                         </div>
                         <div class="header">
-                            @if(isset($count))
+                            @isset($count)
                                 <div class="ui red header">
                                     {{ $count }}
                                 </div>
-                            @endif
+                            @endisset
                         </div>
                         <div class="meta">
                             Fichiers mis en ligne
                         </div>
                         <div class="description">
-                            Elliot requested permission to view your contact details
+                            @isset($count) Il y a au total {{ $count }} fichiers mis en ligne. @endisset
                         </div>
                     </div>
                     <div class="extra content">
@@ -66,15 +66,15 @@
                             <i class="icon users"></i>
                         </div>
                         <div class="header">
-                        @if(isset($users_count))
+                        @isset($users_count)
                             <div class="ui teal header">{{ $users_count }}</div>
-                        @endif
+                        @endisset
                         </div>
                         <div class="meta">
                             Utilisateurs inscrit
                         </div>
                         <div class="description">
-                            Elliot requested permission to view your contact details
+                            {{$users_count}} utilisateurs sont inscrit sur le site.
                         </div>
                     </div>
                     <div class="extra content">
@@ -132,7 +132,13 @@
                     <tbody>
                     @foreach($files_last as $file)
                     <tr id="{{$file->id}}">
-                        <td class="lien"><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
+                        <td class="lien"><i class="file outline icon"></i>
+                            @if($file->document == 1)
+                                <a href="../licence/{{$file->matiere}}/download/{{$file->filename}}">{{$file->filename}}</a>
+                            @elseif($file->document == 0)
+                                <a href="{{$file->filename}}" target="_blank">{{$file->filename}}</a>
+                            @endif
+                        </td>
                         <td>{{ $file->title }}</td>
                         <td>{{ $file->type }}</td>
                         <td>{{ $file->matiere }}</td>

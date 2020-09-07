@@ -8,7 +8,7 @@
         </div>
     @endif
 
-    <form method="POST" class="ui form" action="{{ route('password.email') }}">
+    <form method="POST" class="ui form" action="{{ route('password.email') }}" style="margin-bottom: 1%">
         @csrf
         <h4 class="ui dividing header">Récupération de mot de passe</h4>
         <div class="field">
@@ -21,12 +21,8 @@
                 </span>
             @enderror
         </div>
-
-        <div class="d-flex justify-content-center h-200">
-                <button type="submit" class="ui button">
-                    {{ __('Envoyer un mail de réinitialisation de mot de passe') }}
-                </button>
-            </div>
-        </div>
+        <button type="submit" class="ui button">
+            {{ __('Envoyer un mail de réinitialisation de mot de passe') }}
+        </button>
     </form>
 @endsection

@@ -115,10 +115,6 @@
         <div class="content" id="body-users-table">
 
         </div>
-        <div class="actions">
-            <div class="ui button">Annuler</div>
-            <button id="upload" type="submit" class="ui button">{{ __('Mettre en ligne') }}
-        </div>
     </div>
     <!-- FIN DU MODAL -->
 @endsection

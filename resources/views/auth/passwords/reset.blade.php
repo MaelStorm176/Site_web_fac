@@ -1,5 +1,4 @@
-@extends('layouts.master')
-<link rel="stylesheet" href="css/login.css">
+@extends('layouts.master2')
 
 @section('content')
 <div class="container" style="" >

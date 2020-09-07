@@ -95,8 +95,8 @@ class UserController extends Controller
         {
             abort(404);
         }
-        $count = $files->count();
-        $files->withPath('files?search='.$request["search"].'&select-type='.$request['select-type']);
+        if (Empty($files)){$count = 0;}
+        else{$count = $files->count();$files->withPath('files?search='.$request["search"].'&select-type='.$request['select-type']);}
         $matieres = DB::table('categorie')->select('matiere')->get();
         return view('user.files')->with(compact('files','count','matieres'));
     }

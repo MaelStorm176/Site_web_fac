@@ -19,6 +19,7 @@ class CreateUploadsTable extends Migration
             $table->string('title');
             $table->string('filename')->index();
             $table->string('type')->default('autre');
+            $table->boolean('document')->default(1);
             $table->string('matiere');
             $table->softDeletes();
             $table->timestamps();

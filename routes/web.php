@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', 'HomeController@index')->name('/');
 
 Auth::routes();
@@ -53,4 +55,5 @@ Route::get('login',function (){
 Route::get('/{licence}/{info}','FileController@afficher');
 Route::post('/{licence}/{info}','FileController@afficher');
 
+Route::get('afficher_details','FileController@afficher_details')->name('afficher_details');
 

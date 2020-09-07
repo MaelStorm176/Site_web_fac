@@ -100,7 +100,13 @@
                         <tbody>
                         @foreach($files as $file)
                             <tr id="{{$file->id}}">
-                                <td class="lien"><i class="file outline icon"></i><a href="licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
+                                <td class="lien"><i class="file outline icon"></i>
+                                    @if($file->document == 1)
+                                        <a href="{{$file->matiere}}/download/{{$file->filename}}">{{$file->filename}}</a>
+                                    @elseif($file->document == 0)
+                                        <a href="{{$file->filename}}" target="_blank">{{$file->filename}}</a>
+                                    @endif
+                                </td>
                                 <td>{{ $file->title }}</td>
                                 <td>{{ $file->type }}</td>
                                 <td>{{ $file->matiere }}</td>
@@ -134,9 +140,30 @@
         <div class="content">
             <form class="ui form" method="POST" id="formu" action="{{ route('upload') }}" aria-label="{{ __('Upload') }}" enctype="multipart/form-data">
                 @csrf
-                <div class="field">
-                    <label id="document_label" for="FILE">{{ __('Votre documents (.pdf ou .html)') }}</label>
-                    <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF, .html, .htm," />
+                <div class="inline fields" id="radio-field">
+                    <label>Que souhaitez-vous mettre en ligne ?</label>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="frequency" checked="checked" value="fichier">
+                            <label>Document</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="frequency" value="lien">
+                            <label>Lien vers une page web</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field z134" id="fichier">
+                    <label id="document_label" for="FILE">{{ __('Votre documents (.pdf ou .PDF)') }}</label>
+                    <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF" />
+                </div>
+
+                <div class="field z134" id="lien">
+                    <label id="lien_label" for="FILE">{{ __('Votre lien') }}</label>
+                    <input type="url" class="btn btn-secondary" name="lien_file" id="lien_file" placeholder="Ex: https://www.google.fr/"/>
                 </div>
 
                 <div class="field">

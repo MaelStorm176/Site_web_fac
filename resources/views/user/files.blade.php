@@ -3,12 +3,13 @@
 @section('content')
     <div class="pusher">
         <div class="main-content">
-
             <div class="container">
                 <div class="ui placeholder segment">
-                    <div class="ui two column very relaxed stackable grid">
+                    <div class="ui two column stackable grid padded">
                         <div class="column">
                             <div class="ui form">
+
+                                <!-- BANNER FORMULAIRE -->
                                 <form action="#" method="get">
                                     <div class="three fields">
                                         <div class="field">
@@ -55,6 +56,7 @@
                     </div>
                 </div>
             </div>
+            <!-- FIN BANNER -->
 
 
 
@@ -62,12 +64,7 @@
 
 
 
-
-
-
-
-
-
+            <!-- TABLEAU DE FICHIER -->
             <div class="ui grid stackable padded">
                 <div class="column">
                     <table class="ui celled striped table">
@@ -77,31 +74,38 @@
                                 Tous les fichiers ajoutés ({{$count}})
                             </th>
                         </tr>
-                        <tr>
+                        <tr class="center aligned">
                             <th width="25%">Lien</th>
                             <th>Titre</th>
                             <th>Type</th>
                             <th>Matière</th>
-                            <th>Date d'upload</th>
+                            <th>Date de mise en ligne</th>
                             <th>Date de mise à jour</th>
-                            <th>Action</th>
+                            <th width="20%">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($files as $file)
-                            <tr id="{{$file->id}}">
-                                <td class="lien"><i class="file outline icon"></i><a href="../licence/{{ $file->matiere }}/download/{{$file->filename}}">{{ $file->filename }}</a></td>
-                                <td>{{ $file->title }}</td>
-                                <td>{{ $file->type }}</td>
-                                <td>{{ $file->matiere }}</td>
-                                <td>{{ $file->created_at }}</td>
-                                <td>{{ $file->updated_at }}</td>
-                                <td class="center aligned">
-                                    <button onclick="afficherForm({{$file->id}})" class="ui button"><i class="edit icon"></i></button>
-                                    <button onclick="supprimer({{$file->id}})" class="ui button"><i class="trash icon"></i></button>
-                                </td>
-                            </tr>
-                        @endforeach
+                        @isset($files)
+                            @foreach($files as $file)
+                                <tr id="{{$file->id}}" class="center aligned">
+                                    <td class="lien left aligned"><i class="file outline icon"></i>
+                                        @if($file->document == 1)
+                                            <a href="../licence/{{$file->matiere}}/download/{{$file->filename}}">{{$file->filename}}</a>
+                                        @elseif($file->document == 0)
+                                            <a href="{{$file->filename}}" target="_blank">{{$file->filename}}</a>
+                                        @endif
+                                    </td>
+                                    <td>{{ $file->title }}</td>
+                                    <td>{{ $file->type }}</td>
+                                    <td>{{ $file->matiere }}</td>
+                                    <td>{{ $file->created_at }}</td>
+                                    <td>{{ $file->updated_at }}</td>
+                                    <td>
+                                        <button onclick="afficherForm({{$file->id}})" class="ui button"><i class="edit icon"></i>Modifier</button>
+                                        <button onclick="supprimer({{$file->id}})" class="ui button"><i class="trash icon"></i>Supprimer</button>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                     @if($files->hasPages())
@@ -109,11 +113,16 @@
                             {{$files->links()}}
                         </div>
                     @endif
+                    @endisset
                 </div>
             </div>
+            <!-- FIN TABLEAU -->
+
         </div>
     </div>
 @endsection
+
+</button>
 
 @section('modal')
     <div class="ui tiny modal" id="modal_doc">
@@ -124,9 +133,30 @@
         <div class="content">
             <form class="ui form" method="POST" id="formu" action="{{ route('upload') }}" aria-label="{{ __('Upload') }}" enctype="multipart/form-data">
                 @csrf
-                <div class="field">
-                    <label id="document_label" for="FILE">{{ __('Votre documents (.pdf ou .html)') }}</label>
-                    <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF, .html, .htm," />
+                <div class="inline fields" id="radio-field">
+                    <label>Que souhaitez-vous mettre en ligne ?</label>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="frequency" checked="checked" value="fichier">
+                            <label>Document</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="frequency" value="lien">
+                            <label>Lien externe</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field z134" id="fichier">
+                    <label id="document_label" for="FILE">{{ __('Votre documents (.pdf ou .PDF)') }}</label>
+                    <input type="FILE" class="btn btn-secondary" name="file" id="file" accept=".pdf, .PDF" />
+                </div>
+
+                <div class="field z134" id="lien">
+                    <label id="lien_label" for="FILE">{{ __('Votre lien') }}</label>
+                    <input type="url" class="btn btn-secondary" name="lien_file" id="lien_file" placeholder="Ex: https://www.google.fr/"/>
                 </div>
 
                 <div class="field">
@@ -168,6 +198,23 @@
 
 @section('scripts')
     <script>
+        $('.ui.selection.dropdown')
+            .dropdown({
+                clearable: true
+            })
+        ;
+
+        $(document).ready(function(){
+            $('#lien').hide();
+            $('input[type="radio"]').click(function(){
+                var inputValue = $(this).attr("value");
+                var targetBox = $("#" + inputValue);
+                $(".z134").not(targetBox).hide();
+                $(targetBox).show();
+            });
+        });
+
+
         function open_modal() {
             $('#modal_doc').modal('show');
         }
@@ -188,7 +235,8 @@
                     $('#exampleModalLongTitle').html('Modifier votre document : '+dataretour[0]);
                     $('#formu').prop('action','{{ route('update') }}');
                     $('#title').prop('value',dataretour[0]);
-                    $('#file').hide();
+                    $('#radio-field').hide();
+                    $('.z134').hide();
                     $('#document_label').hide();
                     //$('#file').prop('value',dataretour[1]);
                     $('#id_fichier').val(id);
@@ -206,6 +254,7 @@
         {
             $('#select').val("");
             $('#exampleModalLongTitle').text('Ajouter un document');
+            $('#radio-field').show();
             $('#title').prop('value','');
             $('#formu').prop('action','{{ route("upload") }}');
             $('#upload').html('Mettre en ligne');

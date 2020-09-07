@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use DemeterChain\A;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+use App\User;
 use App\Upload;
 use App\Store;
 use Illuminate\Validation\Rule;
@@ -24,39 +24,63 @@ class FileController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file'    => 'required|max:10000|mimes:pdf,htm,PDF,html',
+            'file'    => 'nullable|max:10000|mimes:pdf,htm,PDF,html',
+            'lien_file' => 'nullable|url',
             'title'   => 'required|max:40',
             'select'  => ['required',Rule::in(['cours', 'td', 'tp', 'autre'])],
             'matiere'  => ['required',Rule::in(DB::table('categorie')->pluck('matiere'))]
         ]);
 
-        $uploadedFile = $request->file('file'); //on selectionne le fichier que l'user a envoyé
-        $filename = $uploadedFile->getClientOriginalName(); //on chope le nom du fichier uploadé
-        if(Storage::disk('local')->exists('files/'.$filename))
-        {
-            $filename = time().'_'.$filename;
+        //UPLOAD DOCUMENT
+        if(!Empty($request['file']) && Empty($request['lien_file'])) {
+            $uploadedFile = $request->file('file'); //on selectionne le fichier que l'user a envoyé
+            $filename = $uploadedFile->getClientOriginalName(); //on chope le nom du fichier uploadé
+            if (Storage::disk('local')->exists('files/' . $filename)) {
+                $filename = time() . '_' . $filename;
+            }
+            /* On enregistre le fichier sur le serveur */
+            Storage::disk('local')->putFileAs(
+                'files/' . $filename,
+                $uploadedFile,
+                $filename
+            );
+
+            /* Insertion dans la table upload du nouveau fichier */
+            $upload = new Upload;
+            $upload->title = $request['title']; //titre
+            $upload->filename = $filename; //nom du fichier
+            $upload->user()->associate(auth()->user()); //ID USER
+            $upload->document = 1; //CECI EST UN DOCUMENT
+            $upload->matiere = $request['matiere']; //matiere
+            $upload->type = request('select'); //type (cours, tp, td...)
+            $upload->save();
+
+            DB::table('download')->insertOrIgnore([
+                'file' => $filename,
+            ]);
+
+            return back()->with('message', 'Votre fichier a été mis en ligne');
         }
-        /* On enregistre le fichier sur le serveur */
-        Storage::disk('local')->putFileAs(
-            'files/'.$filename,
-            $uploadedFile,
-            $filename
-        );
 
-        /* Insertion dans la table upload du nouveau fichier */
-        $upload = new Upload;
-        $upload->title = $request['title']; //titre
-        $upload->filename = $filename; //nom du fichier
-        $upload->user()->associate(auth()->user()); //ID USER
-        $upload->matiere = $request['matiere']; //matiere
-        $upload->type = request('select'); //type (cours, tp, td...)
-        $upload->save();
+        //UPLOAD LIEN
+        elseif(!Empty($request['lien_file']) && Empty($request['file']))
+        {
 
-        DB::table('download')->insertOrIgnore([
-          'file' => $filename,
-        ]);
+            /* Insertion dans la table upload du nouveau fichier */
+            $upload = new Upload;
+            $upload->title = $request['title']; //titre
+            $upload->filename = $request['lien_file']; //lien url
+            $upload->user()->associate(auth()->user()); //ID USER
+            $upload->document = 0; //CECI EST UN LIEN URL
+            $upload->matiere = $request['matiere']; //matiere
+            $upload->type = request('select'); //type (cours, tp, td...)
+            $upload->save();
 
-        return back()->with('message','Votre fichier a été mis en ligne');
+            return back()->with('message', 'Votre fichier a été mis en ligne');
+        }
+        else{
+            return back()->withErrors('Vous ne pouvez pas mettre en ligne un lien et un fichier simultanement');
+        }
     }
 
     /* Affichage des fichiers dans un tableau */
@@ -70,7 +94,7 @@ class FileController extends Controller
         {
             $files = Upload::where('matiere',$info)
                 ->orderBy('id', 'desc')
-                ->paginate(20);
+                ->paginate(5);
         }
         elseif($request['search'] != '') {
             if ($request['select-type'] == '')
@@ -147,6 +171,7 @@ class FileController extends Controller
         Storage::deleteDirectory($d);
         Storage::makeDirectory($d);
         Artisan::call('migrate:refresh --path=/database/migrations/2020_01_11_193337_create_uploads_table.php');
+        Artisan::call('migrate:refresh --path=/database/migrations/2020_06_16_093211_download.php');
         echo('Tous les fichiers ont bien été supprimé');
     }
 
@@ -174,7 +199,8 @@ class FileController extends Controller
         }
     }
     /* permet d'afficher dans le formulaire le bon fichier selectionné */
-    public function afficherForm(Request $request){
+    public function afficherForm(Request $request)
+    {
         if ($request->ajax()){
             $z = Upload::find($request['id']);
             echo $z->title."_|".$z->type."_|".$z->matiere."_|";
@@ -184,90 +210,23 @@ class FileController extends Controller
             abort(404);
         }
     }
+
+    public function afficher_details(Request $request)
+    {
+        if ($request->ajax()){
+            $details = Upload::find($request['id']);
+            $user = User::find($details->user_id);
+            $download_number = DB::table('download')->where('file','=',$details->filename)->value('number');
+            echo '<tr class="ui center aligned">';
+            echo '<td>'.$user->first_name.' '.$user->name.'</td>';
+            echo '<td>'.$details->created_at.'</td>';
+            echo '<td>'.$details->updated_at.'</td>';
+            echo '<td>'.$download_number.'</td>';
+            echo '</tr>';
+        }
+        else
+        {
+            abort(404);
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // public function afficher(Request $request){
-    //   if ($request->ajax()){
-    //     $y = DB::table('files')
-    //             ->join('uploads','files.id','=','uploads.file_id')
-    //             ->where('uploads.type','=',$request['type'])
-    //             ->where('uploads.matiere','=',$request['matiere'])
-    //             ->orderBy('files.id', 'desc')
-    //             ->paginate(5);
-    //             //->get();
-    //     $z = DB::table('uploads')
-    //             ->select('*')
-    //             ->where('type','=',$request['type'])
-    //             ->where('matiere','=',$request['matiere'])
-    //             ->orderBy('id', 'desc')
-    //             ->paginate(5);
-    //             //->get();
-
-    //     $count = 0;
-
-    //     $iduser = Auth::id();
-    //   foreach($y as $key)
-    //   {
-    //     echo "<tr class='text-left' id='".$key->file_id."'>"; //chaque ligne à un id différent
-    //     echo "<td class='text-left' id='titre_".$key->file_id."'>".$request['type']."</td>";
-    //     echo "<td class='text-left' id='titre_".$key->file_id."'>".$key->title."</td>";
-    //     echo "<td class='text-left' id='lien_".$key->file_id."'>"."<a href='download/".$z[$count]->filename."' value=".$z[$count]->filename.">".$z[$count]->filename."</a></td>";
-
-    //     if($iduser == $key->user_id){
-    //       echo "
-    //       <td>
-    //       <i onclick='afficherForm(".$key->file_id.")' class='fas fa-edit' style='margin-right: 20%'></i>
-    //       <i onclick='supprimer(".$key->file_id.")'
-    //       class='fas fa-trash-alt'></i>
-    //       </td>";
-    //       echo "</tr>";
-    //     }
-    //     else{
-    //       echo "<td ></td>";
-    //       echo "</tr>";
-    //     }
-    //     $count++;
-
-    //   }
-    //   $y->withPath('info_501');
-    //   echo "<tr>";
-    //   echo "<td> {{$y->links()}} </td>";
-    //   echo "</tr>";
-
-    //   }
-    //   //echo "</tbody>";
-    //   //echo "{{$y->links()}}";
-    //   //return view("licences.licencel3.cours");
-    // }

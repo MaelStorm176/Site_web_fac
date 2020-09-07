@@ -46,22 +46,26 @@
                         <i class="dropdown icon"></i>
                         INFO 100
                         <div class="menu">
-                            <a class="item" href="/L1/info_101">INFO 101</a>
-                            <a class="item" href="/L1/info_102">INFO 102</a>
-                            <a class="item" href="/L1/info_103">INFO 103</a>
-                            <a class="item" href="/L1/info_104">INFO 104</a>
-                            <a class="item" href="/L1/info_105">INFO 105</a>
+                            <a class="item" href="/L1/INFO_101">INFO 101</a>
+                            <a class="item" href="/L1/INFO_102">INFO 102</a>
+                            <a class="item" href="/L1/INFO_103">INFO 103</a>
+                            <a class="item" href="/L1/MA0101">MA0101</a>
+                            <a class="item" href="/L1/MA0102">MA0102</a>
+                            <a class="item" href="/L1/ANGLAIS100">ANGLAIS</a>
                         </div>
                     </div>
                     <div class="item">
                         <i class="dropdown icon"></i>
                         INFO 200
                         <div class="menu">
-                            <a class="item" href="/L1/info_201">INFO 201</a>
-                            <a class="item" href="/L1/info_202">INFO 202</a>
-                            <a class="item" href="/L1/info_203">INFO 203</a>
-                            <a class="item" href="/L1/info_204">INFO 204</a>
-                            <a class="item" href="/L1/info_205">INFO 205</a>
+                            <a class="item" href="/L1/INFO_201">INFO 201</a>
+                            <a class="item" href="/L1/INFO_202">INFO 202</a>
+                            <a class="item" href="/L1/INFO_203">INFO 203</a>
+                            <a class="item" href="/L1/INFO_204">INFO 204</a>
+                            <a class="item" href="/L1/INFO_205">INFO 205</a>
+                            <a class="item" href="/L1/PPRO200">PPRO</a>
+                            <a class="item" href="/L1/ANGLAIS200">ANGLAIS</a>
+
                         </div>
                     </div>
                 </div>
@@ -76,22 +80,27 @@
                         <i class="dropdown icon"></i>
                         INFO 300
                         <div class="menu">
-                            <a class="item" href="/L2/info_301">INFO 301</a>
-                            <a class="item" href="/L2/info_302">INFO 302</a>
-                            <a class="item" href="/L2/info_303">INFO 303</a>
-                            <a class="item" href="/L2/info_304">INFO 304</a>
-                            <a class="item" href="/L2/info_305">INFO 305</a>
+                            <a class="item" href="/L2/INFO_301">INFO 301</a>
+                            <a class="item" href="/L2/INFO_302">INFO 302</a>
+                            <a class="item" href="/L2/INFO_303">INFO 303</a>
+                            <a class="item" href="/L2/INFO_304">INFO 304</a>
+                            <a class="item" href="/L2/INFO_305">INFO 305</a>
+                            <a class="item" href="/L2/INFO_306">INFO 306</a>
+                            <a class="item" href="/L2/PPRO300">PPRO</a>
+                            <a class="item" href="/L2/ANGLAIS300">ANGLAIS</a>
                         </div>
                     </div>
                     <div class="item">
                         <i class="dropdown icon"></i>
                         INFO 400
                         <div class="menu">
-                            <a class="item" href="/L2/info_401">INFO 401</a>
-                            <a class="item" href="/L2/info_402">INFO 402</a>
-                            <a class="item" href="/L2/info_403">INFO 403</a>
-                            <a class="item" href="/L2/info_404">INFO 404</a>
-                            <a class="item" href="/L2/info_405">INFO 405</a>
+                            <a class="item" href="/L2/INFO_401">INFO 401</a>
+                            <a class="item" href="/L2/INFO_402">INFO 402</a>
+                            <a class="item" href="/L2/INFO_403">INFO 403</a>
+                            <a class="item" href="/L2/MINF0401">MINFO 401</a>
+                            <a class="item" href="/L2/MINF0402">MINFO 402</a>
+                            <a class="item" href="/L2/PPRO400">PPRO</a>
+                            <a class="item" href="/L2/ANGLAIS400">ANGLAIS</a>
                         </div>
                     </div>
                 </div>
@@ -106,22 +115,25 @@
                         <i class="dropdown icon"></i>
                         INFO 500
                         <div class="menu">
-                            <a class="item" href="#">INFO 501</a>
-                            <a class="item" href="#">INFO 502</a>
-                            <a class="item" href="#">INFO 503</a>
-                            <a class="item" href="#">INFO 504</a>
-                            <a class="item" href="#">INFO 505</a>
+                            <a class="item" href="/L3/INFO_501">INFO 501</a>
+                            <a class="item" href="/L3/INFO_502">INFO 502</a>
+                            <a class="item" href="/L3/INFO_503">INFO 503</a>
+                            <a class="item" href="/L3/PPRO500">PPRO</a>
+                            <a class="item" href="/L3/ANGLAIS500">ANGLAIS</a>
                         </div>
                     </div>
                     <div class="item">
                         <i class="dropdown icon"></i>
                         INFO 600
                         <div class="menu">
-                            <a class="item" href="#">INFO 601</a>
-                            <a class="item" href="#">INFO 602</a>
-                            <a class="item" href="#">INFO 603</a>
-                            <a class="item" href="#">INFO 604</a>
-                            <a class="item" href="#">INFO 605</a>
+                            <a class="item" href="/L3/INFO_601">INFO 601</a>
+                            <a class="item" href="/L3/INFO_602">INFO 602</a>
+                            <a class="item" href="/L3/INFO_603">INFO 603</a>
+                            <a class="item" href="/L3/INFO_604">INFO 604</a>
+                            <a class="item" href="/L3/INFO_605">INFO 605</a>
+                            <a class="item" href="/L3/INFO_606">INFO 606</a>
+                            <a class="item" href="/L3/PPRO600">PPRO</a>
+                            <a class="item" href="/L3/ANGLAIS600">ANGLAIS</a>
                         </div>
                     </div>
                 </div>
@@ -143,11 +155,6 @@
                         <i class="info circle icon"></i>Panel administrateur
                     </a>
                     @endhasrole
-
-                    <a href="#" class="item">
-                        <i class="wrench icon"></i>
-                        Parametres
-                    </a>
                     <a class="item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                         <i class="arrow alternate circle right icon"></i>
@@ -162,9 +169,7 @@
         </div>
     </div>
 
-    <div class="ui main text container d-block">
-
-
+    <div class="ui main text container d-block" style="max-width: 100%;">
         @yield('content')
     </div>
 
@@ -174,12 +179,11 @@
         <div class="ui center aligned container">
             <div class="ui stackable inverted divided grid">
                 <div class="three wide column">
-                    <h4 class="ui inverted header">Licence</h4>
+                    <h4 class="ui inverted header">La licence</h4>
                     <div class="ui inverted link list">
                         <a href="https://licenceinfo.fr/" class="item">Licence Informatique</a>
                         <a href="https://www.univ-reims.fr/" class="item">Université</a>
                         <a href="https://thor.univ-reims.fr/" class="item">THoR</a>
-                        <a href="#" class="item">Link Four</a>
                     </div>
                 </div>
                 <div class="three wide column">
@@ -187,8 +191,7 @@
                     <div class="ui inverted link list">
                         <a href="https://www.facebook.com/groups/213445229493092" class="item">Groupe Facebook</a>
                         <a href="https://discord.gg/T2vM2Tu" class="item">Serveur Discord</a>
-                        <a href="#" class="item">Link Three</a>
-                        <a href="#" class="item">Link Four</a>
+                        <a href="https://safir-urca.fr/" class="item">SAFIR</a>
                     </div>
                 </div>
                 <div class="three wide column">
@@ -210,10 +213,8 @@
             <div class="ui inverted section divider"></div>
             <img class="ui centered mini image" src="{{asset('images/logo-urca.png')}}">
             <div class="ui horizontal inverted small divided link list">
-                <a class="item" href="#">Site Map</a>
-                <a class="item" href="#">Contact Us</a>
-                <a class="item" href="#">Terms and Conditions</a>
-                <a class="item" href="#">Privacy Policy</a>
+                <a class="item" href="https://www.google.fr/maps/place/D%C3%A9partement+de+Maths%2FInfo/@49.2433399,4.0620085,18z/data=!4m8!1m2!2m1!1surca!3m4!1s0x47e9742f6b5eb281:0x1708ace4b6ee8b06!8m2!3d49.244499!4d4.0623926">Localisation</a>
+                <a class="item" href="../../entrepot_dossier@gmail.com">Contact Us</a>
             </div>
         </div>
     </div>

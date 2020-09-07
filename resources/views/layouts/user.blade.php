@@ -77,16 +77,6 @@
         </div>
     </a>
 
-    <div class="item">
-        <form action="#">
-            <div class="ui mini action input">
-                <input type="text" placeholder="Search..." />
-                <button class="ui mini icon button">
-                    <i class=" search icon"></i>
-                </button>
-            </div>
-        </form>
-    </div>
     <div class="ui segment inverted">
         <div class="ui tiny olive inverted progress">
             <div class="bar" style="width: 54%"></div>
@@ -164,6 +154,11 @@
 @endif
 @if(session()->has('erreur'))
     <script>$(function (){ erreur('{{session()->get('erreur')}}')});</script>
+@endif
+@if ($errors->any())
+    @foreach ($errors->all() as $error)
+        <script>$(function (){ erreur('{{$error}}')});</script>
+    @endforeach
 @endif
 
 <!------------->
