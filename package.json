@@ -27,6 +27,6 @@
         "dropzone": "^5.7.1",
         "fomantic-ui": "^2.8.5",
         "gulp": "^4.0.2",
-        "minimist": "^1.2.5"
+        "minimist": "^1.2.6"
     }
 }
